@@ -4,64 +4,120 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-let example = [
-    {file:"a.txt", path:"/a.txt", value:3, client:"a"},
-    {file:"b.txt", path:"/b.txt", value:1, client:"b"},
-    {file:"d.txt", path:"/d.txt", value:8, client:"d"},
-    {file:"c.txt", path:"/c.txt", value:12, client:"c"},
-];
-
-class searchBar extends React.Component{
-
-}
-
-class searchTable extends React.Component{
-    render(){
-        <div>These are the headers</div>
+var ProductCategoryRow = React.createClass({
+    render: function() {
+        return (<tr><th colSpan="2">{this.props.category}</th></tr>);
     }
-}
+});
 
-class searchRow extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {likesCount: 0};
-        this.onLike = this.onLike.bind(this);
+var ProductRow = React.createClass({
+    render: function() {
+        var name = this.props.product.stocked ?
+            this.props.product.name :
+            <span style={{color: 'red'}}>
+                {this.props.product.name}
+            </span>;
+        return (
+            <tr>
+                <td>{name}</td>
+                <td>{this.props.product.price}</td>
+            </tr>
+        );
     }
+});
 
-    onLike() {
-        let newLikesCount = this.state.likesCount + 1;
-        this.setState({likesCount: newLikesCount});
+var ProductTable = React.createClass({
+    render: function() {
+        var rows = [];
+        var lastCategory = null;
+        this.props.products.forEach(function(product) {
+            if (product.name.indexOf(this.props.filterText) === -1 || (!product.stocked && this.props.inStockOnly)) {
+                return;
+            }
+            if (product.category !== lastCategory) {
+                rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
+            }
+            rows.push(<ProductRow product={product} key={product.name} />);
+            lastCategory = product.category;
+        }.bind(this));
+        return (
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>{rows}</tbody>
+            </table>
+        );
     }
+});
 
-    render() {
+var SearchBar = React.createClass({
+    handleChange: function() {
+        this.props.onUserInput(
+            this.refs.filterTextInput.value,
+            this.refs.inStockOnlyInput.checked
+        );
+    },
+    render: function() {
+        return (
+            <form>
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    value={this.props.filterText}
+                    ref="filterTextInput"
+                    onChange={this.handleChange}
+                    />
+                <p>
+                    <input
+                        type="checkbox"
+                        checked={this.props.inStockOnly}
+                        ref="inStockOnlyInput"
+                        onChange={this.handleChange}
+                        />
+                    {' '}
+                    Only show products in stock
+                </p>
+            </form>
+        );
+    }
+});
+
+var FilterableProductTable = React.createClass({
+    getInitialState: function() {
+        return {
+            filterText: '',
+            inStockOnly: false
+        };
+    },
+
+    handleUserInput: function(filterText, inStockOnly) {
+        this.setState({
+            filterText: filterText,
+            inStockOnly: inStockOnly
+        });
+    },
+
+    render: function() {
         return (
             <div>
-                Likes : <span>{this.state.likesCount}</span>
-
-                <div>
-                    <button onClick={this.onLike}>Like Me</button>
-                </div>
+                <SearchBar
+                    filterText={this.state.filterText}
+                    inStockOnly={this.state.inStockOnly}
+                    onUserInput={this.handleUserInput}
+                    />
+                <ProductTable
+                    products={this.props.products}
+                    filterText={this.state.filterText}
+                    inStockOnly={this.state.inStockOnly}
+                    />
             </div>
         );
     }
+});
 
-}
 
-class SearchApp extends React.Component {
-    render() {
-        return (
-            <div>
-                <h1>Test Hot Reload react</h1>
-
-                <p>Tfw no reload!!!...</p>
-
-                <p>What</p>
-                <FilterObjElement />
-            </div>
-        )
-    }
-}
-
-render(<SearchApp/>, document.getElementById('searchApp'));
-
-export default FilterObjElement;
+export default FilterableProductTable;
