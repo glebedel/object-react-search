@@ -1,5 +1,6 @@
 node_modules
 npm-debug.log
 .DS_Store
-src/client/public/
+src/public/
 public
+.idea/

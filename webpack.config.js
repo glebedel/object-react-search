@@ -1,18 +1,22 @@
 /**
  * Created by Guillaume on 23/11/2015.
  */
+
 var webpack = require('webpack');
 var path = require('path');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var BUILD_DIR = __dirname + '/src/client/public';
-var APP_DIR = __dirname + '/src/client/app';
+var BUILD_DIR = __dirname + '/src/public';
+var APP_DIR = __dirname + '/src/app';
+var STYLES_DIR = __dirname + '/src/styles';
+
 console.log(BUILD_DIR);
 var config = {
     devtool: 'eval',
     entry: [
         'webpack-dev-server/client?http://localhost:3000',
         'webpack/hot/only-dev-server',
-        APP_DIR + '/index.jsx'
+        APP_DIR + '/index.jsx',
     ],
     output: {
         path: BUILD_DIR,
@@ -20,7 +24,12 @@ var config = {
         publicPath: '/static/'
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery"
+        }),
     ],
     module: {
         loaders: [
@@ -28,9 +37,13 @@ var config = {
                 test: /\.jsx?$/,
                 include: APP_DIR,
                 loaders: ['react-hot', 'babel']
-            }
-        ],
+            },
+            {
+                test: /\.css$/,
+                include: STYLES_DIR,
+                loader: "style!css",
+            },
+        ]
     }
 }
-
 module.exports = config;
