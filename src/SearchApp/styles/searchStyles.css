@@ -1,0 +1,24 @@
+body {
+}
+
+.main_title{
+    text-align:center;
+}
+#searchApp th{
+    cursor:move;
+}
+ul.column-toggler li{
+    padding: 2px 0.5em;
+    margin-left:10px;
+    margin-bottom:5px;
+    cursor: pointer;
+}
+
+ul.column-toggler{
+    text-align: center;
+}
+
+.searchbar-form {
+    width: 30%;
+    margin-left: 35%;
+}

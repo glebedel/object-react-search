@@ -3,14 +3,6 @@
  */
 
 var Filtering = {
-    orderKeys: function (obj, newOrder) {
-        var newObj = {}
-        for (var i = 0; i < newOrder.length; i++) {
-            if (newOrder[i] in obj)
-                newObj[newOrder[i]] = obj[newOrder[i]];
-        }
-        return newObj;
-    },
     notKeysFromCopy: function (objToCopy, keysToKeep, toLowerCase) {
         var copy = {};
         if (!keysToKeep || !keysToKeep.length)
@@ -38,21 +30,6 @@ var Filtering = {
                     copy[key] = toLowerCase && typeof(objToCopy[key]) === "string" ? objToCopy[key].toLowerCase() : objToCopy[key];
             }
         return copy;
-    },
-    objectToArray: function (objOfObjs, keepKey) {
-        var res = [];
-        for (let obj in objOfObjs) {
-            if (objOfObjs.hasOwnProperty(obj)) {
-                if (keepKey && typeof(keepKey) === "string") {
-                    let extension = Object.create(null);
-                    extension[keepKey] = obj;
-                    res.push(Object.assign(objOfObjs[obj], extension));
-                }
-                else
-                    res.push(objOfObjs[obj]);
-            }
-        }
-        return res;
     }
 };
 

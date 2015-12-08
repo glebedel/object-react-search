@@ -7,12 +7,13 @@ var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var BUILD_DIR = __dirname + '/src/public';
-var APP_DIR = __dirname + '/src/app';
-var STYLES_DIR = __dirname + '/src/styles';
+var APP_DIR = __dirname + '/src/SearchApp';
+var STYLES_DIR = __dirname + '/src/SearchApp/styles';
+var BOOTFLAT = __dirname + 'node_modules/bootflat';
 
 console.log(BUILD_DIR);
 var config = {
-    devtool: 'eval',
+    devtool: 'source-map',
     entry: [
         'webpack-dev-server/client?http://localhost:3000',
         'webpack/hot/only-dev-server',
