@@ -1,6 +1,7 @@
 /**
  * Created by guillaumelebedel on 04/12/15.
  */
+var _ = require("lodash")
 import React from 'react';
 //import {render} from 'react-dom';
 import Filtering from '../filtering.js'
@@ -16,13 +17,13 @@ export default class FilterableDataTable extends React.Component {
         source: React.PropTypes.string,
     }
     draggedOver = null
-
     constructor(props) {
         super(props);
         this.state = Object.assign({
             filterText: '',
             jsonData: this.props.data,
             columnsToDisplay: this.props.columnsToDisplay,
+            columnsToKeep: this.columnsToDisplay,
             notSearchable: this.props.notSearchable,
             columnsToggler: this.props.columnsToDisplay.slice(),
         }, this.getStateConfig())
@@ -32,8 +33,9 @@ export default class FilterableDataTable extends React.Component {
         if (!this.props.storeConfig)
             return;
         localStorage.setItem(this.props.storeConfig, JSON.stringify({
-            columnsToDisplay: this.state.columnsToDisplay,
+            columnsToKeep: this.state.columnsToKeep,
             columnsToggler: this.state.columnsToggler,
+            columnsToDisplay: this.state.columnsToDisplay,
             filterText: this.state.filterText
         }));
     }
@@ -44,10 +46,10 @@ export default class FilterableDataTable extends React.Component {
 
     trimDataToState(jsonData) {
         jsonData = Formatting.wholeArray(jsonData, this.props.customDataChanges);
-        if (!this.state.columnsToDisplay && jsonData && jsonData.length)
-            this.state.columnsToDisplay = Object.keys(jsonData[0]);
+        if (!this.state.columnsToKeep && jsonData && jsonData.length)
+            this.state.columnsToKeep = Object.keys(jsonData[0]);
         var trimmedData = jsonData.map(function (jsonEntry) {
-            return Filtering.notKeysFromCopy(jsonEntry, this.state.columnsToDisplay);
+            return Filtering.notKeysFromCopy(jsonEntry, this.state.columnsToKeep);
         }.bind(this));
         var stringifiedData = trimmedData.map(function (trimmedEntry) {
             return (JSON.stringify(Filtering.keysFromCopy(trimmedEntry, this.state.notSearchable, true)));
@@ -64,12 +66,10 @@ export default class FilterableDataTable extends React.Component {
         }
     }
 
-    handleUserInput = (filterText, inStockOnly) => {
-        this.setState({
-            filterText: filterText,
-            inStockOnly: inStockOnly
-        });
-    }
+    handleUserInput = _.debounce((filterText)=> {
+        this.setState({filterText})
+    }, 400)
+
     handleColumnToggling = (event) => {
         if (this.draggedOver)
             return;
@@ -103,7 +103,6 @@ export default class FilterableDataTable extends React.Component {
         togglers.splice(indexDraggedToggler, 1);
         displayed.splice(indexDraggedToColumn, 0, draggedName);
         togglers.splice(indexDraggedToToggler, 0, draggedName)
-            [togglers[indexDraggedToToggler], togglers[indexDraggedColumn]] = [togglers[indexDraggedColumn], togglers[indexDraggedToColumn]];
         this.setState({columnsToDisplay: displayed, columnsTogger: togglers})
     }
     handleColumnDragOver = (event) => {
@@ -117,6 +116,7 @@ export default class FilterableDataTable extends React.Component {
             <div
                 onClick={this.onClick}>
                 <DataColumnTogglers
+                    columnsToKeep={this.state.columnsToKeep}
                     columnsToDisplay={this.state.columnsToDisplay}
                     toggleHandler={this.handleColumnToggling}
                     columnsToggler={this.state.columnsToggler}
@@ -127,8 +127,10 @@ export default class FilterableDataTable extends React.Component {
                     />
                 <SearchBar
                     filterText={this.state.filterText}
-                    inStockOnly={this.state.inStockOnly}
                     onUserInput={this.handleUserInput}
+                    dataArray={this.state.trimmedData}
+                    higlighting={false}
+                    autocomplete={true}
                     />
 
                 <div><DataTable
@@ -145,4 +147,5 @@ export default class FilterableDataTable extends React.Component {
             </div>
         );
     }
-};
+}
+;

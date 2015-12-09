@@ -3,6 +3,14 @@
  */
 
 var Filtering = {
+    orderKeys: function (obj, newOrder) {
+        var newObj = {}
+        for (var i = 0; i < newOrder.length; i++) {
+            if (newOrder[i] in obj)
+                newObj[newOrder[i]] = obj[newOrder[i]];
+        }
+        return newObj;
+    },
     notKeysFromCopy: function (objToCopy, keysToKeep, toLowerCase) {
         var copy = {};
         if (!keysToKeep || !keysToKeep.length)

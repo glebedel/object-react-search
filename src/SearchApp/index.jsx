@@ -29,18 +29,24 @@ var customChanges = function (arr) {
         return res;
     }
     arr = objectToArray(arr);
-    arr.forEach(function (obj) {
-        flattenMatchResults(obj);
-    }.bind(this));
+    arr.forEach((obj)=>flattenMatchResults(obj));
+    arr.forEach((obj)=>{obj["DATE UPDATED"] = new Date(obj["DATE UPDATED"]).toLocaleDateString("en-GB")});
     return arr;
 }
 
-render(<FilterableDataTable source="/data_files/integrations.json"
-                            customDataChanges={customChanges}
-                            displayColumnsToggler={true}
-                            exactMatch={false}
-                            columnsToDisplay={["FILENAME", "client", "environment", "campaign", "matches", "provider", "version", "DATE UPDATED", "path"]}
-                            rowKey={"trackId"}
-                            storeConfig={"ReactReport"}
-                            notSearchable={["trackPrice"]}/>, document.getElementById('searchApp'));
+render(
+    <div>
+        <div className="main-title">
+            <h1>React Reporting</h1>
+        </div>
+        <FilterableDataTable source="/data_files/integrations.json"
+                             customDataChanges={customChanges}
+                             displayColumnsToggler={true}
+                             exactMatch={false}
+                             columnsToDisplay={["FILENAME", "client", "environment", "campaign", "matches", "provider", "version", "DATE UPDATED", "path"]}
+                             rowKey={"trackId"}
+                             storeConfig={"ReactReport"}
+                             notSearchable={["trackPrice"]}
+            />
+    </div>, document.getElementById('searchApp'));
 

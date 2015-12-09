@@ -32,7 +32,7 @@ var DataTable = React.createClass({
             });
         }
         return (
-            <table className="table">
+            <table className="table table-striped table-hover table-condensed table-responsive">
                 <thead>
                 <tr>
                     {headers}

@@ -1,14 +1,20 @@
 import React from 'react';
 
-var SearchBar = React.createClass({
-    handleChange: function () {
+export default class SearchBar extends React.Component{
+    handleChange = () => {
         this.props.onUserInput(this.refs.filterTextInput.value);
-    },
-    manageSubmit: function (e) {
+    }
+    constructor(props){
+        super(props);
+    }
+    manageSubmit(e) {
         e.preventDefault();
         return false;
-    },
-    render: function () {
+    }
+    componentDidMount(){
+        this.refs.filterTextInput.value = this.props.filterText;
+    }
+    render() {
         return (
             <form
                 onSubmit={this.manageSubmit}
@@ -17,14 +23,11 @@ var SearchBar = React.createClass({
                 <input
                     type="text"
                     placeholder="Search...."
-                    value={this.props.filterText}
-                    ref="filterTextInput"
-                    onChange={this.handleChange}
+                    //value={this.props.filterText}
+                    ref="filterTextInput" onChange={this.handleChange}
                     className="SearchApp-searchbar form-control search-query"
                     />
             </form>
         );
     }
-});
-
-export default SearchBar;
+}
