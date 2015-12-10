@@ -16,7 +16,12 @@
 }
 
 #searchApp .searchbar-form {
-    width: 30%;
+    width: 40%;
+    min-width:200px;
     margin-left: 35%;
     margin-bottom:2%;
+}
+
+#searchApp .searchbar-form input{
+    font-size:1.3em;
 }

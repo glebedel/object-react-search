@@ -23,13 +23,18 @@ var Formatting = {
             return cell.toString();
         else {
             separator = separator || this.MULTIPLE_RESULTS_SPERATOR
-            let res = "";
-            for (let cellComponent in cell) {
-                if (cell.hasOwnProperty(cellComponent) && cell[cellComponent].toString)
-                    res += (res ? separator : "") + cell[cellComponent].toString();
-            }
-            return res;
+            return this.objToArray(cell).join(separator);
         }
+    },
+    objToArray: function(cell){
+        if (cell.constructor === Array)
+           return cell;
+        var res = [];
+        for (let cellComponent in cell) {
+            if (cell.hasOwnProperty(cellComponent) && cell[cellComponent].toString)
+                res.push(cell[cellComponent]);
+        }
+        return res;
     }
 }
 export default Formatting;

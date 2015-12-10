@@ -9,7 +9,7 @@ var customChanges = function (arr) {
                 obj["provider"] = obj["matches"][match]["provider"] || "";
                 obj["version"] = obj["matches"][match]["version"] || "";
             }
-            obj["matches"] = Object.keys(obj["matches"]).join(",");
+            obj["matches"] = Object.keys(obj["matches"]);
         }
     };
     var objectToArray = function (objOfObjs, keepKey) {
@@ -47,7 +47,7 @@ render(
                              columnsToDisplay={["FILENAME", "client", "environment", "campaign", "matches", "provider", "version", "DATE UPDATED", "path"]}
                              rowKey={"path"}
                              storeConfig={"ReactReport"}
-                             notSearchable={["client", "path"]}
+                             notSearchable={["path"]}
                              rowsLimiter={100}
                              exporters={["csv", "json", "pdf"]}
             />

@@ -42,10 +42,10 @@ export default class FilterableDataTable extends React.Component {
         }, this.getStateConfig())
     }
 
-    setStateConfig() {
-        if (!this.props.storeConfig)
+    setStateConfig(item) {
+        if (!item || !item.length)
             return;
-        localStorage.setItem(this.props.storeConfig, JSON.stringify({
+        localStorage.setItem(item, JSON.stringify({
             columnsToKeep: this.state.columnsToKeep,
             columnsToggler: this.state.columnsToggler,
             columnsToDisplay: this.state.columnsToDisplay,
@@ -61,13 +61,10 @@ export default class FilterableDataTable extends React.Component {
         jsonData = Formatting.wholeArray(jsonData, this.props.customDataChanges);
         if (!this.state.columnsToKeep && jsonData && jsonData.length)
             this.state.columnsToKeep = Object.keys(jsonData[0]);
-        var trimmedData = jsonData.map(function (jsonEntry) {
-            return Filtering.notKeysFromCopy(jsonEntry, this.state.columnsToKeep);
-        }.bind(this));
-        var stringifiedData = trimmedData.map(function (trimmedEntry) {
-            return (JSON.stringify(Filtering.keysFromCopy(trimmedEntry, this.state.notSearchable, true)));
-        }.bind(this));
-        this.setState({jsonData, trimmedData, stringifiedData});
+        var trimmedData = jsonData.map((jsonEntry) => Filtering.notKeysFromCopy(jsonEntry, this.state.columnsToKeep));
+        var searchableData = trimmedData.map((trimmedEntry) => Filtering.keysFromCopy(trimmedEntry, this.state.notSearchable, true));
+        var stringifiedData = searchableData.map((searchableEntry) => JSON.stringify(searchableEntry).toLowerCase());
+        this.setState({jsonData, trimmedData, searchableData, stringifiedData});
     }
 
     componentDidMount() {
@@ -123,8 +120,8 @@ export default class FilterableDataTable extends React.Component {
     }
 
     render() {
-        var {...rest} = this.props;
-        this.setStateConfig();
+        var {storeConfig, displayColumnsToggler, ...rest} = this.props;
+        this.setStateConfig(storeConfig);
         return (
             <div
                 onClick={this.onClick}>
@@ -134,7 +131,7 @@ export default class FilterableDataTable extends React.Component {
                     columnsToDisplay={this.state.columnsToDisplay}
                     toggleHandler={this.handleColumnToggling}
                     columnsToggler={this.state.columnsToggler}
-                    displayColumnsToggler={this.props.displayColumnsToggler}
+                    displayColumnsToggler={displayColumnsToggler}
                     columnDraggingHandler={this.handleColumnDragEnd}
                     columnDraggingOverHandler={this.handleColumnDragOver}
                     columnDraggingStartHandler={this.handleColumnDragStart}
@@ -146,6 +143,8 @@ export default class FilterableDataTable extends React.Component {
                     dataArray={this.state.trimmedData}
                     higlighting={false}
                     autocomplete={true}
+                    data={this.state.searchableData}
+                    exactSearch={this.props.exactMatch}
                     />
                 <div><DataTable
                     {...rest}
