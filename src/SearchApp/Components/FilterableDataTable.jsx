@@ -1,20 +1,32 @@
 /**
  * Created by guillaumelebedel on 04/12/15.
  */
-var _ = require("lodash")
+
+import '../styles/searchStyles.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-material-design/dist/css/material.min.css";
+import "bootstrap-material-design/dist/css/ripples.min.css";
+
+
 import React from 'react';
-//import {render} from 'react-dom';
 import Filtering from '../filtering.js'
 import Formatting from '../formatting.js';
 import SearchBar from './SearchBar.jsx';
 import DataTable from './DataTable.jsx';
+import Exporter from './Exporter.jsx';
 import DataColumnTogglers from './DataColumnTogglers.jsx';
 
+var _ = require("lodash")
+import "bootstrap/dist/js/bootstrap.min.js";
+import "bootstrap-material-design/dist/js/material.min.js";
+$.material.init()
+
 export default class FilterableDataTable extends React.Component {
-    static defaultProps = {jsonData: []}
+    static defaultProps = {jsonData: [], rowsLimiter: 0}
     static propTypes = {
         columnsToDisplay: React.PropTypes.arrayOf(React.PropTypes.string),
         source: React.PropTypes.string,
+        rowsLimiter: React.PropTypes.number
     }
     draggedOver = null
     constructor(props) {
@@ -26,6 +38,7 @@ export default class FilterableDataTable extends React.Component {
             columnsToKeep: this.columnsToDisplay,
             notSearchable: this.props.notSearchable,
             columnsToggler: this.props.columnsToDisplay.slice(),
+            rowsLimiter: this.props.rowsLimiter
         }, this.getStateConfig())
     }
 
@@ -68,7 +81,7 @@ export default class FilterableDataTable extends React.Component {
 
     handleUserInput = _.debounce((filterText)=> {
         this.setState({filterText})
-    }, 400)
+    }, 250)
 
     handleColumnToggling = (event) => {
         if (this.draggedOver)
@@ -102,7 +115,7 @@ export default class FilterableDataTable extends React.Component {
         displayed.splice(indexDraggedColumn, 1);
         togglers.splice(indexDraggedToggler, 1);
         displayed.splice(indexDraggedToColumn, 0, draggedName);
-        togglers.splice(indexDraggedToToggler, 0, draggedName)
+        togglers.splice(indexDraggedToToggler, 0, draggedName);
         this.setState({columnsToDisplay: displayed, columnsTogger: togglers})
     }
     handleColumnDragOver = (event) => {
@@ -115,6 +128,7 @@ export default class FilterableDataTable extends React.Component {
         return (
             <div
                 onClick={this.onClick}>
+                <Exporter/>
                 <DataColumnTogglers
                     columnsToKeep={this.state.columnsToKeep}
                     columnsToDisplay={this.state.columnsToDisplay}
@@ -126,15 +140,16 @@ export default class FilterableDataTable extends React.Component {
                     columnDraggingStartHandler={this.handleColumnDragStart}
                     />
                 <SearchBar
+                    placeholder="Search..."
                     filterText={this.state.filterText}
                     onUserInput={this.handleUserInput}
                     dataArray={this.state.trimmedData}
                     higlighting={false}
                     autocomplete={true}
                     />
-
                 <div><DataTable
                     {...rest}
+                    rowsLimiter={this.state.rowsLimiter}
                     filterText={this.state.filterText}
                     inStockOnly={this.state.inStockOnly}
                     dataToDisplay={this.state.trimmedData}

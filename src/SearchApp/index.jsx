@@ -1,4 +1,3 @@
-import './styles/searchStyles.css';
 import React from 'react';
 import {render} from 'react-dom';
 import FilterableDataTable from './Components/FilterableDataTable.jsx';
@@ -29,8 +28,10 @@ var customChanges = function (arr) {
         return res;
     }
     arr = objectToArray(arr);
-    arr.forEach((obj)=>flattenMatchResults(obj));
-    arr.forEach((obj)=>{obj["DATE UPDATED"] = new Date(obj["DATE UPDATED"]).toLocaleDateString("en-GB")});
+    arr.forEach((obj)=> {
+        flattenMatchResults(obj);
+        obj["DATE UPDATED"] = new Date(obj["DATE UPDATED"]).toLocaleDateString("en-GB")
+    });
     return arr;
 }
 
@@ -44,9 +45,11 @@ render(
                              displayColumnsToggler={true}
                              exactMatch={false}
                              columnsToDisplay={["FILENAME", "client", "environment", "campaign", "matches", "provider", "version", "DATE UPDATED", "path"]}
-                             rowKey={"trackId"}
+                             rowKey={"path"}
                              storeConfig={"ReactReport"}
-                             notSearchable={["trackPrice"]}
+                             notSearchable={["client", "path"]}
+                             rowsLimiter={100}
+                             exporters={["csv", "json", "pdf"]}
             />
     </div>, document.getElementById('searchApp'));
 

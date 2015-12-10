@@ -5,6 +5,7 @@ import React from 'react';
 import DataRow from "./DataRow.jsx";
 import DataHeader from "./DataHeader.jsx";
 import Formatting from "../formatting.js";
+var _ = require("lodash");
 
 var DataTable = React.createClass({
     render: function () {
@@ -31,6 +32,7 @@ var DataTable = React.createClass({
                 return <DataHeader header={field} key={field}/>
             });
         }
+        if (this.props.rowsLimiter) rows = _.slice(rows, 0, this.props.rowsLimiter);
         return (
             <table className="table table-striped table-hover table-condensed table-responsive">
                 <thead>

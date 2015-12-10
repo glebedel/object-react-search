@@ -6,7 +6,7 @@ var DataColumnTogglers = React.createClass({
         if (this.props.displayColumnsToggler)
             for (let i = 0; i < this.props.columnsToggler.length; i++) {
                 let isToggled = this.props.columnsToDisplay.indexOf(this.props.columnsToggler[i]) !== -1;
-                let isToggledClass = (isToggled ? "btn btn-success" : "btn");
+                let isToggledClass = (isToggled ? "btn btn-raised btn-success" : "btn btn-raised btn-default");
                 columns.push(<li
                         className={isToggledClass}
                         draggable={true}

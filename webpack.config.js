@@ -9,7 +9,6 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var BUILD_DIR = __dirname + '/src/public';
 var APP_DIR = __dirname + '/src/SearchApp';
 var STYLES_DIR = __dirname + '/src/SearchApp/styles';
-var BOOTFLAT = __dirname + 'node_modules/bootflat';
 
 console.log(BUILD_DIR);
 var config = {
@@ -41,9 +40,13 @@ var config = {
             },
             {
                 test: /\.css$/,
-                include: STYLES_DIR,
-                loader: "style!css",
+                loader: "style-loader!css-loader",
             },
+            {
+                test: /\.jpe?g$|\.gif$|\.png$|\.svg.*$|\.woff.*$|\.ttf.*$|\.wav$|\.mp3$|\.eot.*$/,
+                loader: "url-loader"
+            }
+
         ]
     }
 }

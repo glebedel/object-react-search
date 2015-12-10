@@ -1,11 +1,14 @@
 import React from 'react';
 
 export default class SearchBar extends React.Component{
-    handleChange = () => {
-        this.props.onUserInput(this.refs.filterTextInput.value);
+    static defaultProps = {placeholder: ["Search..."]}
+    static propTypes = {
     }
     constructor(props){
         super(props);
+    }
+    handleChange = () => {
+        this.props.onUserInput(this.refs.filterTextInput.value);
     }
     manageSubmit(e) {
         e.preventDefault();
@@ -22,7 +25,7 @@ export default class SearchBar extends React.Component{
                 >
                 <input
                     type="text"
-                    placeholder="Search...."
+                    placeholder={this.props.placeholder}
                     //value={this.props.filterText}
                     ref="filterTextInput" onChange={this.handleChange}
                     className="SearchApp-searchbar form-control search-query"

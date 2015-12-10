@@ -20,7 +20,7 @@ var Filtering = {
             for (let key in objToCopy) {
                 if (objToCopy.hasOwnProperty(key) && typeof(objToCopy[key]) === "object")
                     copy[key] = this.keysFromCopy(objToCopy[key], keysToKeep, toLowerCase);
-                else if (keysToKeep.indexOf(key) !== -1)
+                else if (keysToKeep.includes(key))
                     copy[key] = toLowerCase && typeof(objToCopy[key]) === "string" ? objToCopy[key].toLowerCase() : objToCopy[key];
             }
         return copy;
@@ -34,8 +34,8 @@ var Filtering = {
             for (let key in objToCopy) {
                 if (objToCopy.hasOwnProperty(key) && typeof(objToCopy[key]) === "object")
                     copy[key] = this.keysFromCopy(objToCopy[key], keysToRemove, toLowerCase);
-                else if (keysToRemove.indexOf(key) === -1)
-                    copy[key] = toLowerCase && typeof(objToCopy[key]) === "string" ? objToCopy[key].toLowerCase() : objToCopy[key];
+                else if (!keysToRemove.includes(key))
+                    copy[key] = objToCopy[key];
             }
         return copy;
     }
