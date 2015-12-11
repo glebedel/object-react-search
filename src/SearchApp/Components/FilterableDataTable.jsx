@@ -75,7 +75,9 @@ export default class FilterableDataTable extends React.Component {
             this.trimDataToState(this.state.jsonData)
         }
     }
-
+    shouldComponentUpdate(nextProps, nextState) {
+        return true;
+    }
     handleUserInput = _.debounce((filterText)=> {
         this.setState({filterText})
     }, 250)
@@ -143,6 +145,7 @@ export default class FilterableDataTable extends React.Component {
                     dataArray={this.state.trimmedData}
                     higlighting={false}
                     autocomplete={true}
+                    autocompleteLimit={100}
                     data={this.state.searchableData}
                     exactSearch={this.props.exactMatch}
                     />

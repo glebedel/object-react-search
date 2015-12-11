@@ -2,6 +2,7 @@
  * Created by guillaumelebedel on 29/11/15.
  */
 import Formatting from "./formatting.js";
+var _ = require('lodash');
 
 var Filtering = {
     orderKeys: function (obj, newOrder) {
@@ -80,6 +81,11 @@ var Filtering = {
                 }
             }
         }
+        return res;
+    },
+    getNewProperties(oldObject, newObject){
+        var res = new Object(newObject);
+        _.forOwn(newObject, (value, key) =>{if (!(key in oldObject)) res[key] = newObject[key]});
         return res;
     }
 };
