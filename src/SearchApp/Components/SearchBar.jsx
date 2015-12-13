@@ -32,7 +32,10 @@ export default class SearchBar extends React.Component {
     extractNewSuggestions(oldSuggestions, newSuggestions) {
         _.forOwn(newSuggestions,)
     }
-
+    suggestionSelected(selectedValue){
+        this.refs.filterTextInput.value = selectedValue;
+        this.props.onUserInput(this.refs.filterTextInput.value);
+    }
     getSuggestions(searchInput, data) {
         var suggestions = {};
         if (searchInput)

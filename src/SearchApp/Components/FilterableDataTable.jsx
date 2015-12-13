@@ -144,8 +144,9 @@ export default class FilterableDataTable extends React.Component {
                     onUserInput={this.handleUserInput}
                     dataArray={this.state.trimmedData}
                     higlighting={false}
-                    autocomplete={true}
-                    autocompleteLimit={100}
+                    autocomplete={this.props.autocomplete}
+                    autocompleteLimit={this.props.autocompleteLimit}
+                    autocompleteThreshold={this.props.autocompleteThreshold}
                     data={this.state.searchableData}
                     exactSearch={this.props.exactMatch}
                     />
