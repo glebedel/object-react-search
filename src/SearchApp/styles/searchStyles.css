@@ -15,21 +15,30 @@
     text-align: center;
 }
 
-#searchApp .searchbar-form {
+#searchApp .searchbar {
     width: 40%;
     min-width:200px;
     margin-left: 35%;
     margin-bottom:50px;
 }
 
-#searchApp .searchbar-form input{
+#searchApp .searchbar form input{
     font-size:1.3em;
 }
 #searchApp .autocomplete{
     width: 100%;
+    cursor: pointer;
 }
-#searchApp .autocomplete li small{
+#searchApp .autocomplete li.suggestion.focused{
+    background-color: #eeeeee;
+}
+
+#searchApp .autocomplete li.suggestion.focused a{
+    color: #009688;
+}
+#searchApp .autocomplete li .results-count{
     float:right;
+
 }
 #searchApp .autocomplete li span{
     float:left;

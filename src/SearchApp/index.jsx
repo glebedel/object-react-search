@@ -40,7 +40,7 @@ render(
         <div className="main-title">
             <h1>React Reporting</h1>
         </div>
-        <FilterableDataTable source="/data_files/sample.json"
+        <FilterableDataTable source="/data_files/integrations.json"
                              customDataChanges={customChanges}
                              displayColumnsToggler={true}
                              exactMatch={false}
@@ -48,7 +48,7 @@ render(
                              rowKey={"path"}
                              storeConfig={"ReactReport"}
                              notSearchable={["path"]}
-                             rowsLimiter={200}
+                             rowsLimiter={500}
                              autocomplete={true}
                              autocompleteLimit={5}
                              autocompleteThreshold={1}

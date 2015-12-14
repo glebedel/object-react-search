@@ -79,7 +79,7 @@ export default class FilterableDataTable extends React.Component {
     }
     handleUserInput = _.debounce((filterText)=> {
         this.setState({filterText})
-    }, 250)
+    }, 150)
 
     handleColumnToggling = (event) => {
         if (this.draggedOver)

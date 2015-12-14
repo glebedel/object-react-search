@@ -85,7 +85,9 @@ var Filtering = {
     },
     getNewProperties(oldObject, newObject){
         var res = new Object(newObject);
-        _.forOwn(newObject, (value, key) =>{if (!(key in oldObject)) res[key] = newObject[key]});
+        _.forOwn(newObject, (value, key) => {
+            if (!(key in oldObject)) res[key] = newObject[key]
+        });
         return res;
     },
     sortObjByPropertyValue(obj, sortCallback){
@@ -105,7 +107,36 @@ var Filtering = {
         for (let i = 0; i < resArray.length; i++)
             filteredObj[resArray[i][0]] = resArray[i][1];
         return filteredObj;
-    }
+    },
+    sortMapByPropertyValue(map, sortCallback){
+        let resArray = [];
+        map.forEach((value, key)=>resArray.push([key, value]));
+        resArray.sort((item1, item2)=>sortCallback(item1[1], item2[1]))
+        var sortedMap = new Map();
+        for (let i = 0; i < resArray.length; i++)
+            sortedMap.set(resArray[i][0], resArray[i][1]);
+        return sortedMap;
+    },
+    filterMapByPropertyValue(map, filterCallback){
+        let resArray = [];
+        map.forEach((value, key)=>resArray.push([key, value]));
+        resArray = resArray.filter((item)=>filterCallback(item[1]))
+        var filteredMap = new Map();
+        for (let i = 0; i < resArray.length; i++)
+            filteredMap.set(resArray[i][0], resArray[i][1]);
+        return filteredMap;
+    },
+    objectToMap(obj, deep){
+        var map = new Map();
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key))
+                if (obj[key].constructor === Object && deep)
+                    map.set(key, this.objectToMap(obj[key], deep));
+                else
+                    map.set(key, obj[key])
+        }
+        return map;
+    },
 };
 
 export default Filtering;

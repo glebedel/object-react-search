@@ -6,33 +6,79 @@ import Filtering from '../filtering.js';
 var _ = require("lodash");
 
 export default class AutoCompleteSuggestions extends React.Component {
-    static defaultProps = {suggestions: {}, autocompleteThreshold:1}
+    static defaultProps = {suggestions: {}, autocompleteThreshold: 1}
     static propTypes = {suggestions: React.PropTypes.object}
+    displayedSuggestions = []
 
     constructor(props) {
         super(props);
+        this.state = {
+            focusedIndex: -1
+        }
     }
-    onClickHandler(event){
-        this.props.changeSearchBar(event.target.closest('li').dataset.suggestion)
+
+    getSuggestionFocusedOn() {
+        if (this.state.focusedIndex >= 0)
+            return this.displayedSuggestions[this.state.focusedIndex];
+        else
+            return {};
     }
+
+    onClickHandler(event) {
+        this.selectSuggestion(event.target.closest('li').dataset.suggestion)
+    }
+
+    goDownSuggestions() {
+        if (this.state.focusedIndex < this.displayedSuggestions.length - 1)
+            this.setState({focusedIndex: this.state.focusedIndex + 1})
+    }
+
+    goUpSuggestions() {
+        if (this.state.focusedIndex > 0)
+            this.setState({focusedIndex: this.state.focusedIndex - 1})
+    }
+
+    selectSuggestion(suggestion, suggestionType) {
+        this.props.changeSearchBar(suggestion, suggestionType);
+    }
+
+    setFocusedIndex(index) {
+        this.setState({focusedIndex: index})
+    }
+
     render() {
         var suggestions = [];
-        let threshold = this.props.autocompleteThreshold;
-        _.forOwn(this.props.suggestions, (allMatches, resultColumn) => {
-             let counter = 0;
-             suggestions.push(<span key={resultColumn}>{resultColumn}</span>);
-             allMatches = Filtering.filterObjByPropertyValue(allMatches, (value)=>{return value >= threshold});
-             allMatches = Filtering.sortObjByPropertyValue(allMatches, (value1, value2)=>{return value1 < value2});
-            _.forOwn(allMatches, (counter, match) => {
-                if (this.props.autocompleteLimit && counter++ < this.props.autocompleteLimit)
-                suggestions.push(<li key={match} data-suggestion={match}>
-                        <a onClick={this.onClickHandler.bind(this)} >{match.toString()}
-                            <small> - {counter + " result" + (counter > 1 ? "s" : "")}</small>
-                        </a>
-                    </li>);
+        this.displayedSuggestions = [];
+        let maxSuggestions = this.props.autocompleteLimit;
+        let totalSuggestionsInserted = 0;
+        for (let [resultColumn, allMatches] of this.props.suggestions.entries()){
+            let suggestionsInserted = 0;
+            if (suggestions.length)
+                suggestions.push(<li className="divider" key={"divider-" + resultColumn}></li>)
+            suggestions.push(<li className="dropdown-header" key={resultColumn}>{resultColumn}</li>);
+            allMatches = Filtering.filterMapByPropertyValue(allMatches, (value)=> {
+                return value >= this.props.autocompleteThreshold;
             });
-        });
-        if (this.props.autocompleteLimit) suggestions = _.slice(suggestions, 0, this.props.autocompleteLimit);
+            allMatches = Filtering.sortMapByPropertyValue(allMatches, (value1, value2)=> {
+                return value2 - value1
+            });
+            for (let [match, counter] of allMatches){
+                if (!maxSuggestions || suggestionsInserted < maxSuggestions) {
+                    this.displayedSuggestions.push({suggestion: match, suggestionType: resultColumn});
+                    suggestions.push(
+                        <li key={resultColumn + "-" + match}
+                            className={"suggestion " + (totalSuggestionsInserted == this.state.focusedIndex ? "focused" : "")}
+                            data-suggestion={match}
+                            data-suggestion-category={resultColumn}>
+                            <a onClick={this.onClickHandler.bind(this)}>{match.toString()}
+                                <span className="results-count">{counter + " result" + (counter > 1 ? "s" : "")}</span>
+                            </a>
+                        </li>);
+                    totalSuggestionsInserted++;
+                }
+                suggestionsInserted++;
+            };
+        };
         return (
             <ul className="autocomplete dropdown-menu">
                 {suggestions}
