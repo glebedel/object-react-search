@@ -48,7 +48,7 @@ render(
                              rowKey={"path"}
                              storeConfig={"ReactReport"}
                              notSearchable={["path"]}
-                             rowsLimiter={100}
+                             rowsLimiter={200}
                              exporters={["csv", "json", "pdf"]}
             />
     </div>, document.getElementById('searchApp'));
