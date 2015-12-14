@@ -40,7 +40,7 @@ render(
         <div className="main-title">
             <h1>React Reporting</h1>
         </div>
-        <FilterableDataTable source="/data_files/integrations.json"
+        <FilterableDataTable source="/data_files/sample.json"
                              customDataChanges={customChanges}
                              displayColumnsToggler={true}
                              exactMatch={false}
@@ -49,6 +49,9 @@ render(
                              storeConfig={"ReactReport"}
                              notSearchable={["path"]}
                              rowsLimiter={200}
+                             autocomplete={true}
+                             autocompleteLimit={5}
+                             autocompleteThreshold={1}
                              exporters={["csv", "json", "pdf"]}
             />
     </div>, document.getElementById('searchApp'));

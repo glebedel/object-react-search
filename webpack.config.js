@@ -7,7 +7,7 @@ var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var BUILD_DIR = __dirname + '/src/public';
-var APP_DIR = __dirname + '/src/SearchApp';
+var APP_DIR = __dirname + '\\src\\SearchApp';
 var STYLES_DIR = __dirname + '/src/SearchApp/styles';
 
 console.log(BUILD_DIR);

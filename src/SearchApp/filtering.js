@@ -87,6 +87,24 @@ var Filtering = {
         var res = new Object(newObject);
         _.forOwn(newObject, (value, key) =>{if (!(key in oldObject)) res[key] = newObject[key]});
         return res;
+    },
+    sortObjByPropertyValue(obj, sortCallback){
+        let resArray = [];
+        _.forOwn(obj, (val, key)=>resArray.push([key, val]));
+        resArray.sort((item1, item2)=>sortCallback(item1[1], item2[1]))
+        var sortedObj = Object.create(null);
+        for (let i = 0; i < resArray.length; i++)
+            sortedObj[resArray[i][0]] = resArray[i][1];
+        return sortedObj;
+    },
+    filterObjByPropertyValue(obj, filterCallback){
+        let resArray = [];
+        _.forOwn(obj, (val, key)=>resArray.push([key, val]));
+        resArray = resArray.filter((item)=>filterCallback(item[1]))
+        var filteredObj = Object.create(null);
+        for (let i = 0; i < resArray.length; i++)
+            filteredObj[resArray[i][0]] = resArray[i][1];
+        return filteredObj;
     }
 };
 

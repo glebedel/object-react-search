@@ -18,6 +18,7 @@ export default class SearchBar extends React.Component {
     handleChange = () => {
         this.getSuggestions(this.refs.filterTextInput.value, this.props.data)
         this.props.onUserInput(this.refs.filterTextInput.value);
+        if (!this.state.userSearching) this.setState({userSearching: true})
     }
 
     blockSubmit(e) {
@@ -32,7 +33,10 @@ export default class SearchBar extends React.Component {
     extractNewSuggestions(oldSuggestions, newSuggestions) {
         _.forOwn(newSuggestions,)
     }
-
+    setSuggestion(suggestion){
+        this.refs.filterTextInput.value = suggestion;
+        this.props.onUserInput(this.refs.filterTextInput.value);
+    }
     getSuggestions(searchInput, data) {
         var suggestions = {};
         if (searchInput)
@@ -47,10 +51,7 @@ export default class SearchBar extends React.Component {
     }
 
     blurHandler = (event) => {
-        this.setState({userSearching: false})
-    }
-    focusHandler = (event) =>{
-        this.setState({userSearching: true})
+        setTimeout(()=>this.setState({userSearching: false}), 300);
     }
     render() {
         var input =
@@ -64,6 +65,8 @@ export default class SearchBar extends React.Component {
             autoComplete = <AutoCompleteSuggestions
                 suggestions={this.state.suggestions}
                 autocompleteLimit={this.props.autocompleteLimit}
+                autocompleteThreshold={this.props.autocompleteThreshold}
+                changeSearchBar={this.setSuggestion.bind(this)}
                 />
 
         return (<form
@@ -72,7 +75,6 @@ export default class SearchBar extends React.Component {
                 (Object.keys(this.state.suggestions).length
                 && this.state.userSearching ? "open" :"")}
                 onBlur={this.blurHandler}
-                onFocus={this.focusHandler}
                 >
                 {input}
                 {autoComplete}
