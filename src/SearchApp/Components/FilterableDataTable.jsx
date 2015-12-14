@@ -35,7 +35,7 @@ export default class FilterableDataTable extends React.Component {
             filterText: '',
             jsonData: this.props.data,
             columnsToDisplay: this.props.columnsToDisplay,
-            columnsToKeep: this.columnsToDisplay,
+            columnsToKeep: this.props.columnsToDisplay,
             notSearchable: this.props.notSearchable,
             columnsToggler: this.props.columnsToDisplay.slice(),
             rowsLimiter: this.props.rowsLimiter
@@ -46,7 +46,6 @@ export default class FilterableDataTable extends React.Component {
         if (!item || !item.length)
             return;
         localStorage.setItem(item, JSON.stringify({
-            columnsToKeep: this.state.columnsToKeep,
             columnsToggler: this.state.columnsToggler,
             columnsToDisplay: this.state.columnsToDisplay,
             filterText: this.state.filterText

@@ -32,7 +32,7 @@ var DataTable = React.createClass({
                 return <DataHeader header={field} key={field}/>
             });
         }
-        if (this.props.rowsLimiter) rows = _.slice(rows, 0, this.props.rowsLimiter);
+        if (this.props.rowsLimiter && rows.length > this.props.rowsLimiter) rows = _.slice(rows, 0, this.props.rowsLimiter);
         return (
             <table className="table table-striped table-hover table-condensed table-responsive">
                 <thead>

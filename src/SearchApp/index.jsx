@@ -44,14 +44,15 @@ render(
 //                             customDataChanges={customChanges}
                              displayColumnsToggler={true}
                              exactMatch={false}
-                             columnsToDisplay={["FILENAME", "client", "environment", "campaign", "matches", "provider", "version", "DATE UPDATED", "path"]}
-                             rowKey={"path"}
-                             storeConfig={"ReactReport"}
-                             notSearchable={["path"]}
+//                             columnsToDisplay={["FILENAME", "client", "environment", "campaign", "matches", "provider", "version", "DATE UPDATED", "path"]}
+                             columnsToDisplay={["artistName", "collectionName", "collectionPrice", "trackPrice"]}
+                             rowKey={"trackId"}
+                             storeConfig={"SampleReport"}
+                             notSearchable={["collectionPrice"]}
                              rowsLimiter={100}
                              autocomplete={true}
-                             autocompleteLimit={20}
-                             autocompleteThreshold={10}
+                             autocompleteLimit={5}
+                             autocompleteThreshold={1}
                              exporters={["csv", "json", "pdf"]}
             />
     </div>, document.getElementById('searchApp'));

@@ -90,7 +90,7 @@ var Filtering = {
     },
     sortObjByPropertyValue(obj, sortCallback){
         let resArray = [];
-        _.forOwn(test, (val, key)=>resArray.push([key, val]));
+        _.forOwn(obj, (val, key)=>resArray.push([key, val]));
         resArray.sort((item1, item2)=>sortCallback(item1[1], item2[1]))
         var sortedObj = Object.create(null);
         for (let i = 0; i < resArray.length; i++)
@@ -99,7 +99,7 @@ var Filtering = {
     },
     filterObjByPropertyValue(obj, filterCallback){
         let resArray = [];
-        _.forOwn(test, (val, key)=>resArray.push([key, val]));
+        _.forOwn(obj, (val, key)=>resArray.push([key, val]));
         resArray = resArray.filter((item)=>filterCallback(item[1]))
         var filteredObj = Object.create(null);
         for (let i = 0; i < resArray.length; i++)
