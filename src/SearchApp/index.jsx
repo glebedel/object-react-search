@@ -28,10 +28,16 @@ var customChanges = function (arr) {
         return res;
     }
     arr = objectToArray(arr);
-    arr.forEach((obj)=> {
-        flattenMatchResults(obj);
-        obj["DATE UPDATED"] = new Date(obj["DATE UPDATED"]).toLocaleDateString("en-GB")
-    });
+    let d = new Date();
+    for (let i = 0; i < arr.length;i++){
+        flattenMatchResults(arr[i]);
+        d.setTime(Date.parse(arr[i]["DATE UPDATED"]));
+        let dt = d.getDate().toString();
+        let mm = (d.getMonth() + 1).toString();
+        dt = dt.length === 1 ? "0" + dt : dt;
+        mm = mm.length === 1 ? "0" + mm : mm;
+        arr[i]["DATE UPDATED"] = dt +"/" + mm +"/" + (1900 + d.getYear());
+    }
     return arr;
 }
 
@@ -43,15 +49,15 @@ render(
         <FilterableDataTable source="/data_files/integrations.json"
                              customDataChanges={customChanges}
                              displayColumnsToggler={true}
-                             exactMatch={false}
                              columnsToDisplay={["FILENAME", "client", "environment", "campaign", "matches", "provider", "version", "DATE UPDATED", "path"]}
-                             rowKey={"path"}
-                             storeConfig={"ReactReport"}
                              notSearchable={["path"]}
-                             rowsLimiter={500}
-                             autocomplete={true}
-                             autocompleteLimit={5}
-                             autocompleteThreshold={1}
+                             rowKey={"path"}
+                             sort={{sortable:true, default: "client"}}
+//                             rowsLimiter={1000}
+                             storeConfig={{baseName:"ReactReport", showResetButton: true}}
+                             autocomplete={{show: true, limit:4, threshold:1}}
+                             searchType={"normal"}
+                             exactMatch={false}
                              exporters={["csv", "json", "pdf"]}
             />
     </div>, document.getElementById('searchApp'));

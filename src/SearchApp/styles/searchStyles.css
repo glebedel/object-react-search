@@ -2,7 +2,6 @@
     text-align:center;
 }
 #searchApp th{
-    cursor:move;
 }
 #searchApp ul.column-toggler li{
     padding: 2px 0.5em;
@@ -16,9 +15,9 @@
 }
 
 #searchApp .searchbar {
-    width: 40%;
+    width: 50%;
     min-width:200px;
-    margin-left: 35%;
+    margin-left: 25%;
     margin-bottom:50px;
 }
 
@@ -27,6 +26,8 @@
 }
 #searchApp .autocomplete{
     width: 100%;
+}
+#searchApp .autocomplete li.suggestion{
     cursor: pointer;
 }
 #searchApp .autocomplete li.suggestion.focused{
@@ -42,4 +43,11 @@
 }
 #searchApp .autocomplete li span{
     float:left;
+}
+#searchApp .column-toggler .drag-over{
+    border-left: 2px solid black;
+}
+
+#searchApp tr.not-match{
+    max-height:5px;
 }

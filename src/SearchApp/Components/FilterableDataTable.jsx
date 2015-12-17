@@ -19,6 +19,7 @@ import DataColumnTogglers from './DataColumnTogglers.jsx';
 var _ = require("lodash")
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap-material-design/dist/js/material.min.js";
+import "bootstrap-material-design/dist/js/ripples.min.js";
 $.material.init()
 
 export default class FilterableDataTable extends React.Component {
@@ -29,6 +30,7 @@ export default class FilterableDataTable extends React.Component {
         rowsLimiter: React.PropTypes.number
     }
     draggedOver = null
+    dataMatchingSearch = null
     constructor(props) {
         super(props);
         this.state = Object.assign({
@@ -38,7 +40,7 @@ export default class FilterableDataTable extends React.Component {
             columnsToKeep: this.props.columnsToDisplay,
             notSearchable: this.props.notSearchable,
             columnsToggler: this.props.columnsToDisplay.slice(),
-            rowsLimiter: this.props.rowsLimiter
+            rowsLimiter: this.props.rowsLimiter,
         }, this.getStateConfig())
     }
 
@@ -51,9 +53,15 @@ export default class FilterableDataTable extends React.Component {
             filterText: this.state.filterText
         }));
     }
-
+    setDataMatchingSearch = (displayedData)=>{
+        this.dataMatchingSearch = displayedData;
+    }
+    getDataMatchingSearch = (displayedData) =>{
+        return this.dataMatchingSearch;
+    }
     getStateConfig() {
-        return JSON.parse(localStorage.getItem(this.props.storeConfig));
+        return this.props.storeConfig && this.props.storeConfig.baseName &&
+            JSON.parse(localStorage.getItem(this.props.storeConfig.baseName));
     }
 
     trimDataToState(jsonData) {
@@ -119,14 +127,13 @@ export default class FilterableDataTable extends React.Component {
     handleColumnDragOver = (event) => {
         this.draggedOver = event.target;
     }
-
     render() {
         var {storeConfig, displayColumnsToggler, ...rest} = this.props;
-        this.setStateConfig(storeConfig);
+        this.setStateConfig(storeConfig.baseName);
         return (
             <div
                 onClick={this.onClick}>
-                <Exporter/>
+                <Exporter types={this.props.exporters} getData={this.getDataMatchingSearch}/>
                 <DataColumnTogglers
                     columnsToKeep={this.state.columnsToKeep}
                     columnsToDisplay={this.state.columnsToDisplay}
@@ -135,7 +142,6 @@ export default class FilterableDataTable extends React.Component {
                     displayColumnsToggler={displayColumnsToggler}
                     columnDraggingHandler={this.handleColumnDragEnd}
                     columnDraggingOverHandler={this.handleColumnDragOver}
-                    columnDraggingStartHandler={this.handleColumnDragStart}
                     />
                 <SearchBar
                     placeholder="Search..."
@@ -144,8 +150,6 @@ export default class FilterableDataTable extends React.Component {
                     dataArray={this.state.trimmedData}
                     higlighting={false}
                     autocomplete={this.props.autocomplete}
-                    autocompleteLimit={this.props.autocompleteLimit}
-                    autocompleteThreshold={this.props.autocompleteThreshold}
                     data={this.state.searchableData}
                     exactSearch={this.props.exactMatch}
                     />
@@ -158,6 +162,7 @@ export default class FilterableDataTable extends React.Component {
                     stringifiedData={this.state.stringifiedData}
                     columnsToDisplay={this.state.columnsToDisplay}
                     columnDraggingHandler={this.handleColumnDragEnd}
+                    setDataMatchingSearch={this.setDataMatchingSearch}
                     jsonData={this.state.jsonData}
                     />
                 </div>

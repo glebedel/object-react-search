@@ -68,7 +68,7 @@ var Filtering = {
         }
         return res;
     },
-    getMatchesFromArray(input, arrayData, exactMatch){
+    getMatchesFromArrayOfObj(input, arrayData, exactMatch){
         var res = new Object(null);
         for (let i = 0; i < arrayData.length; i++) {
             let singleRes = this.getMatchesFromObj(input, arrayData[i])

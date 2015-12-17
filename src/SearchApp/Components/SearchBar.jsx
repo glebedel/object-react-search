@@ -42,24 +42,24 @@ export default class SearchBar extends React.Component {
         var suggestions = new Map();
         if (searchInput) {
             if (!this.props.exactSearch) searchInput = searchInput.toLowerCase();
-            suggestions = Filtering.getMatchesFromArray(searchInput, data, this.props.exactSearch)
+            suggestions = Filtering.getMatchesFromArrayOfObj(searchInput, data, this.props.exactSearch)
             suggestions = Filtering.objectToMap(suggestions, true);
             var newSuggestions = Filtering.getNewProperties(this.state.suggestions, suggestions);
         }
         this.setState({suggestions})
         return suggestions;
     }
-    shouldDisplayAutocomplete(){
-        return (this.props.autocomplete && this.state.userSearching &&
-            this.state.suggestions && this.state.suggestions.size &&
-            this.refs && this.refs.filterTextInput && this.refs.filterTextInput.value);
+
+    shouldDisplayAutocomplete() {
+        return (this.props.autocomplete && this.props.autocomplete.show &&
+        this.state.userSearching && this.state.suggestions && this.state.suggestions.size &&
+        this.refs && this.refs.filterTextInput && this.refs.filterTextInput.value);
     }
+
     blurHandler = (event) => {
-        console.log("blur handler");
         setTimeout(()=>this.setState({userSearching: false}), 300);
     }
     focusHandler = (event) => {
-        console.log("focus handler");
         this.setState({userSearching: true});
     }
     arrowHandler = (event) => {
@@ -73,9 +73,11 @@ export default class SearchBar extends React.Component {
             else if (event.keyCode == 13) {
                 let selectedSuggestion = suggestionList.getSuggestionFocusedOn();
                 suggestionList.selectSuggestion(selectedSuggestion.suggestion, selectedSuggestion.suggestionType);
-                console.log(event.target);
             }
             event.preventDefault();
+        }
+        else if (event.keyCode == 27) {
+
         }
     }
 
@@ -93,8 +95,7 @@ export default class SearchBar extends React.Component {
             autoComplete = <AutoCompleteSuggestions
                 ref="suggestionsList"
                 suggestions={this.state.suggestions}
-                autocompleteLimit={this.props.autocompleteLimit}
-                autocompleteThreshold={this.props.autocompleteThreshold}
+                autocomplete={this.props.autocomplete}
                 changeSearchBar={this.setSuggestion.bind(this)}
                 />
         }

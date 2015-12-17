@@ -14,7 +14,7 @@ var Formatting = {
         if (!arr)
             return;
         if (customChanges)
-           arr = customChanges(arr);
+            arr = customChanges(arr);
         this.addReactKeysToArray(arr, this.ROW_UNIQUE_KEY);
         return arr;
     },
@@ -26,15 +26,28 @@ var Formatting = {
             return this.objToArray(cell).join(separator);
         }
     },
-    objToArray: function(cell){
+    objToArray: function (cell) {
         if (cell.constructor === Array)
-           return cell;
+            return cell;
         var res = [];
         for (let cellComponent in cell) {
             if (cell.hasOwnProperty(cellComponent) && cell[cellComponent].toString)
                 res.push(cell[cellComponent]);
         }
         return res;
+    },
+    JSON2CSV: (json)=> {
+        var keys = [];
+        for (var k in json[0]) keys.push(k);
+        var result = keys.join("\t") + "\n";
+        json.forEach(function(obj){
+            keys.forEach(function(k, ix){
+                if (ix) result += "\t";
+                result += obj[k];
+            });
+            result += "\n";
+        });
+        return result;
     }
 }
 export default Formatting;

@@ -14,7 +14,8 @@ var DataRow = React.createClass({
                                key={this.props.columnsToDisplay[i]}>{temporaryRow[i]}</td>)
             }
         return (
-            <tr>
+            <tr className={this.props.searchType === "highlight" && this.props.isMatch ? "success search-highlight" : "not-match"}
+                >
                 {cells}
             </tr>
         );

@@ -46,39 +46,62 @@ export default class AutoCompleteSuggestions extends React.Component {
         this.setState({focusedIndex: index})
     }
 
+    preventUnFocusHandler(event) {
+        console.log("preventFocusEvent")
+        event.preventDefault();
+        event.stopPropagation()
+    }
+
     render() {
         var suggestions = [];
         this.displayedSuggestions = [];
-        let maxSuggestions = this.props.autocompleteLimit;
+        let maxSuggestions = this.props.autocomplete.limit;
         let totalSuggestionsInserted = 0;
-        for (let [resultColumn, allMatches] of this.props.suggestions.entries()){
+        for (let [resultColumn, allMatches] of this.props.suggestions.entries()) {
             let suggestionsInserted = 0;
             if (suggestions.length)
-                suggestions.push(<li className="divider" key={"divider-" + resultColumn}></li>)
-            suggestions.push(<li className="dropdown-header" key={resultColumn}>{resultColumn}</li>);
-            allMatches = Filtering.filterMapByPropertyValue(allMatches, (value)=> {
-                return value >= this.props.autocompleteThreshold;
-            });
+                suggestions.push(
+                    <li
+                        onMouseDown={this.preventUnFocusHandler}
+                        className="divider"
+                        key={"divider-" + resultColumn}>
+                    </li>
+                )
+            suggestions.push(
+                <li
+                    onMouseDown={this.preventUnFocusHandler}
+                    className="dropdown-header"
+                    key={resultColumn}>{resultColumn}
+                </li>
+            );
+            if (this.props.autocomplete.threshold)
+                allMatches = Filtering.filterMapByPropertyValue(allMatches, (value)=> {
+                    return value >= this.props.autocomplete.threshold;
+                });
             allMatches = Filtering.sortMapByPropertyValue(allMatches, (value1, value2)=> {
                 return value2 - value1
             });
-            for (let [match, counter] of allMatches){
+            for (let [match, counter] of allMatches) {
                 if (!maxSuggestions || suggestionsInserted < maxSuggestions) {
                     this.displayedSuggestions.push({suggestion: match, suggestionType: resultColumn});
                     suggestions.push(
-                        <li key={resultColumn + "-" + match}
+                        <li onClick={this.onClickHandler.bind(this)}
+                            key={resultColumn + "-" + match}
                             className={"suggestion " + (totalSuggestionsInserted == this.state.focusedIndex ? "focused" : "")}
                             data-suggestion={match}
                             data-suggestion-category={resultColumn}>
-                            <a onClick={this.onClickHandler.bind(this)}>{match.toString()}
+                            <a>
+                                {match.toString()}
                                 <span className="results-count">{counter + " result" + (counter > 1 ? "s" : "")}</span>
                             </a>
                         </li>);
                     totalSuggestionsInserted++;
                 }
                 suggestionsInserted++;
-            };
-        };
+            }
+            ;
+        }
+        ;
         return (
             <ul className="autocomplete dropdown-menu">
                 {suggestions}
