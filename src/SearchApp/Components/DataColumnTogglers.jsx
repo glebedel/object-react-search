@@ -1,9 +1,9 @@
 import React from 'react';
 
-var DataColumnTogglers = React.createClass({
+let DataColumnTogglers = React.createClass({
     onDragOverHandler: _.throttle(function (event) {
-        var allTogglers = event.target.parentNode.childNodes;
-        for (var i = 0; i < allTogglers.length; i++) {
+        let allTogglers = event.target.parentNode.childNodes;
+        for (let i = 0; i < allTogglers.length; i++) {
             if (allTogglers[i].classList.contains('drag-over'))
                 allTogglers[i].classList.remove('drag-over')
         };
@@ -12,8 +12,8 @@ var DataColumnTogglers = React.createClass({
     }, 200),
     onDragEndHandler: function (event) {
         setTimeout(function () {
-            var allTogglers = event.target.parentNode.childNodes;
-            for (var i = 0; i < allTogglers.length; i++) {
+            let allTogglers = event.target.parentNode.childNodes;
+            for (let i = 0; i < allTogglers.length; i++) {
                 if (allTogglers[i].classList.contains('drag-over'))
                     allTogglers[i].classList.remove('drag-over')
             };
@@ -21,7 +21,7 @@ var DataColumnTogglers = React.createClass({
         this.props.columnDraggingHandler(event);
     },
     render: function () {
-        var columns = [];
+        let columns = [];
         if (this.props.displayColumnsToggler)
             for (let i = 0; i < this.props.columnsToggler.length; i++) {
                 let isToggled = this.props.columnsToDisplay.indexOf(this.props.columnsToggler[i]) !== -1;

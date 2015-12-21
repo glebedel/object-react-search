@@ -2,19 +2,19 @@
  * Created by guillaumelebedel on 29/11/15.
  */
 import Formatting from "./formatting.js";
-var _ = require('lodash');
+let _ = require('lodash');
 
-var Filtering = {
+let Filtering = {
     orderKeys: function (obj, newOrder) {
-        var newObj = {}
-        for (var i = 0; i < newOrder.length; i++) {
+        let newObj = {}
+        for (let i = 0; i < newOrder.length; i++) {
             if (newOrder[i] in obj)
                 newObj[newOrder[i]] = obj[newOrder[i]];
         }
         return newObj;
     },
     notKeysFromCopy: function (objToCopy, keysToKeep) {
-        var copy = {};
+        let copy = {};
         if (!keysToKeep || !keysToKeep.length)
             for (let key in objToCopy)
                 copy[key] = objToCopy[key];
@@ -28,7 +28,7 @@ var Filtering = {
         return copy;
     },
     keysFromCopy: function (objToCopy, keysToRemove) {
-        var copy = {};
+        let copy = {};
         if (!keysToRemove || !keysToRemove.length)
             for (let key in objToCopy)
                 copy[key] = objToCopy[key];
@@ -42,7 +42,7 @@ var Filtering = {
         return copy;
     },
     findInArrayElements(inputToMatch, arr, exactMatch){
-        var res = [];
+        let res = [];
         for (let i = 0; i < arr.length; i++) {
             if ((!exactMatch && arr[i].toString().toLowerCase().includes(inputToMatch)) ||
                 (exactMatch && arr[i].toString() == inputToMatch))
@@ -51,13 +51,13 @@ var Filtering = {
         return res;
     },
     getMatchesFromObj(input, singleData, exactMatch){
-        var res = new Object(null);
+        let res = new Object(null);
         for (let key in singleData) {
             if (singleData.hasOwnProperty(key) && singleData[key]) {
                 if (typeof(singleData[key]) === "object") {
                     let arrayedData = Formatting.objToArray(singleData[key]);
                     if (arrayedData.constructor === Array) {
-                        var resArray = this.findInArrayElements(input, arrayedData);
+                        let resArray = this.findInArrayElements(input, arrayedData);
                         if (resArray.length) res[key] = resArray;
                     }
                 }
@@ -69,7 +69,7 @@ var Filtering = {
         return res;
     },
     getMatchesFromArrayOfObj(input, arrayData, exactMatch){
-        var res = new Object(null);
+        let res = new Object(null);
         for (let i = 0; i < arrayData.length; i++) {
             let singleRes = this.getMatchesFromObj(input, arrayData[i])
             for (let key in singleRes) {
@@ -84,7 +84,7 @@ var Filtering = {
         return res;
     },
     getNewProperties(oldObject, newObject){
-        var res = new Object(newObject);
+        let res = new Object(newObject);
         _.forOwn(newObject, (value, key) => {
             if (!(key in oldObject)) res[key] = newObject[key]
         });
@@ -94,7 +94,7 @@ var Filtering = {
         let resArray = [];
         _.forOwn(obj, (val, key)=>resArray.push([key, val]));
         resArray.sort((item1, item2)=>sortCallback(item1[1], item2[1]))
-        var sortedObj = Object.create(null);
+        let sortedObj = Object.create(null);
         for (let i = 0; i < resArray.length; i++)
             sortedObj[resArray[i][0]] = resArray[i][1];
         return sortedObj;
@@ -103,7 +103,7 @@ var Filtering = {
         let resArray = [];
         _.forOwn(obj, (val, key)=>resArray.push([key, val]));
         resArray = resArray.filter((item)=>filterCallback(item[1]))
-        var filteredObj = Object.create(null);
+        let filteredObj = Object.create(null);
         for (let i = 0; i < resArray.length; i++)
             filteredObj[resArray[i][0]] = resArray[i][1];
         return filteredObj;
@@ -112,7 +112,7 @@ var Filtering = {
         let resArray = [];
         map.forEach((value, key)=>resArray.push([key, value]));
         resArray.sort((item1, item2)=>sortCallback(item1[1], item2[1]))
-        var sortedMap = new Map();
+        let sortedMap = new Map();
         for (let i = 0; i < resArray.length; i++)
             sortedMap.set(resArray[i][0], resArray[i][1]);
         return sortedMap;
@@ -121,13 +121,13 @@ var Filtering = {
         let resArray = [];
         map.forEach((value, key)=>resArray.push([key, value]));
         resArray = resArray.filter((item)=>filterCallback(item[1]))
-        var filteredMap = new Map();
+        let filteredMap = new Map();
         for (let i = 0; i < resArray.length; i++)
             filteredMap.set(resArray[i][0], resArray[i][1]);
         return filteredMap;
     },
     objectToMap(obj, deep){
-        var map = new Map();
+        let map = new Map();
         for (let key in obj) {
             if (obj.hasOwnProperty(key))
                 if (obj[key].constructor === Object && deep)

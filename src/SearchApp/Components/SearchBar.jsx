@@ -2,7 +2,7 @@ import React from 'react';
 import Filtering from "../filtering.js"
 import AutoCompleteSuggestions from './AutoCompleteSuggestions.js'
 
-var _ = require("lodash");
+let _ = require("lodash");
 
 export default class SearchBar extends React.Component {
     static defaultProps = {placeholder: ["Search..."]}
@@ -39,12 +39,12 @@ export default class SearchBar extends React.Component {
     }
 
     getSuggestions(searchInput, data) {
-        var suggestions = new Map();
+        let suggestions = new Map();
         if (searchInput) {
             if (!this.props.exactSearch) searchInput = searchInput.toLowerCase();
             suggestions = Filtering.getMatchesFromArrayOfObj(searchInput, data, this.props.exactSearch)
             suggestions = Filtering.objectToMap(suggestions, true);
-            var newSuggestions = Filtering.getNewProperties(this.state.suggestions, suggestions);
+            let newSuggestions = Filtering.getNewProperties(this.state.suggestions, suggestions);
         }
         this.setState({suggestions})
         return suggestions;
@@ -82,7 +82,7 @@ export default class SearchBar extends React.Component {
     }
 
     render() {
-        var input =
+        let input =
             <input
                 type="text"
                 placeholder={this.props.placeholder}
@@ -90,7 +90,7 @@ export default class SearchBar extends React.Component {
                 className="SearchApp-searchbar form-control search-query"
                 autoComplete={"off"}
                 />
-        var autoComplete = "";
+        let autoComplete = "";
         if (this.shouldDisplayAutocomplete()) {
             autoComplete = <AutoCompleteSuggestions
                 ref="suggestionsList"

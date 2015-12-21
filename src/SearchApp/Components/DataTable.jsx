@@ -5,7 +5,7 @@ import React from 'react';
 import DataRow from "./DataRow.jsx";
 import DataHeader from "./DataHeader.jsx";
 import Formatting from "../formatting.js";
-var _ = require("lodash");
+let _ = require("lodash");
 
 
 export default class DataTable extends React.Component {
@@ -17,8 +17,8 @@ export default class DataTable extends React.Component {
         }
     }
     createHeaders(){
-        var headers = [];
-        var self = this;
+        let headers = [];
+        let self = this;
         headers = this.props.columnsToDisplay.map(function (field) {
             if (self.state.sort)
                 return <DataHeader onClick={self.handleColumnClick} header={field} key={field}/>
@@ -33,16 +33,17 @@ export default class DataTable extends React.Component {
     }
 
     render() {
-        var rows = [];
-        var headers = [];
-        var exactMatch = this.props.exactMatch;
-        var selectedRows = [];
-        var filterText = exactMatch ? this.props.filterText : this.props.filterText.toLowerCase();
+        let rows = [];
+        let headers = [];
+        let exactMatch = this.props.exactMatch;
+        let selectedRows = [];
+        let filterText = exactMatch ? this.props.filterText : this.props.filterText.toLowerCase();
         if (this.props.dataToDisplay) {
             filterText = filterText.split(/(\s+)/);
             //optimize to replace the splits chars
             for (let i = 0; i < this.props.dataToDisplay.length; i++) {
-                for (var j = 0, matchesAll = true; j < filterText.length; j++) {
+                let matchesAll = true;
+                for (let j = 0; j < filterText.length; j++) {
                     let dataAsString = exactMatch ? this.props.stringifiedData[i] :
                         this.props.stringifiedData[i].toLowerCase();
                     if (!dataAsString.includes(filterText[j]))

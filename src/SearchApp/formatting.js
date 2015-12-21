@@ -2,7 +2,7 @@
  * Created by guillaumelebedel on 29/11/15.
  */
 
-var Formatting = {
+let Formatting = {
     ROW_UNIQUE_KEY: "ReactSearchItem",
     MULTIPLE_RESULTS_SPERATOR: ", ",
     addReactKeysToArray: function (arr, base) {
@@ -29,7 +29,7 @@ var Formatting = {
     objToArray: function (cell) {
         if (cell.constructor === Array)
             return cell;
-        var res = [];
+        let res = [];
         for (let cellComponent in cell) {
             if (cell.hasOwnProperty(cellComponent) && cell[cellComponent].toString)
                 res.push(cell[cellComponent]);
@@ -37,9 +37,9 @@ var Formatting = {
         return res;
     },
     JSON2CSV: (json)=> {
-        var keys = [];
-        for (var k in json[0]) keys.push(k);
-        var result = keys.join("\t") + "\n";
+        let keys = [];
+        for (let k in json[0]) keys.push(k);
+        let result = keys.join("\t") + "\n";
         json.forEach(function(obj){
             keys.forEach(function(k, ix){
                 if (ix) result += "\t";

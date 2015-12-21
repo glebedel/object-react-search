@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import Filtering from '../filtering.js';
-var _ = require("lodash");
+let _ = require("lodash");
 
 export default class AutoCompleteSuggestions extends React.Component {
     static defaultProps = {suggestions: {}, autocompleteThreshold: 1}
@@ -53,7 +53,7 @@ export default class AutoCompleteSuggestions extends React.Component {
     }
 
     render() {
-        var suggestions = [];
+        let suggestions = [];
         this.displayedSuggestions = [];
         let maxSuggestions = this.props.autocomplete.limit;
         let totalSuggestionsInserted = 0;

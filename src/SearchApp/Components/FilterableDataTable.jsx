@@ -16,7 +16,7 @@ import DataTable from './DataTable.jsx';
 import Exporter from './Exporter.jsx';
 import DataColumnTogglers from './DataColumnTogglers.jsx';
 
-var _ = require("lodash")
+let _ = require("lodash")
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap-material-design/dist/js/material.min.js";
 import "bootstrap-material-design/dist/js/ripples.min.js";
@@ -68,9 +68,9 @@ export default class FilterableDataTable extends React.Component {
         jsonData = Formatting.wholeArray(jsonData, this.props.customDataChanges);
         if (!this.state.columnsToKeep && jsonData && jsonData.length)
             this.state.columnsToKeep = Object.keys(jsonData[0]);
-        var trimmedData = jsonData.map((jsonEntry) => Filtering.notKeysFromCopy(jsonEntry, this.state.columnsToKeep));
-        var searchableData = trimmedData.map((trimmedEntry) => Filtering.keysFromCopy(trimmedEntry, this.state.notSearchable, true));
-        var stringifiedData = searchableData.map((searchableEntry) => JSON.stringify(searchableEntry).toLowerCase());
+        let trimmedData = jsonData.map((jsonEntry) => Filtering.notKeysFromCopy(jsonEntry, this.state.columnsToKeep));
+        let searchableData = trimmedData.map((trimmedEntry) => Filtering.keysFromCopy(trimmedEntry, this.state.notSearchable, true));
+        let stringifiedData = searchableData.map((searchableEntry) => JSON.stringify(searchableEntry).toLowerCase());
         this.setState({jsonData, trimmedData, searchableData, stringifiedData});
     }
 
@@ -128,7 +128,7 @@ export default class FilterableDataTable extends React.Component {
         this.draggedOver = event.target;
     }
     render() {
-        var {storeConfig, displayColumnsToggler, ...rest} = this.props;
+        let {storeConfig, displayColumnsToggler, ...rest} = this.props;
         this.setStateConfig(storeConfig.baseName);
         return (
             <div

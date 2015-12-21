@@ -7,7 +7,7 @@ var DataRow = React.createClass({
         for (let i = 0; i < this.props.columnsToDisplay.length; i++) {
             temporaryRow.push(Formatting.toCellString(this.props.rowToDisplay[this.props.columnsToDisplay[i]] || ""));
         }
-        var cells =[]
+        let cells =[]
         if (temporaryRow.join("").length > 0)
             for (let i = 0; i < temporaryRow.length; i++) {
                 cells.push(<td className={"cell " + this.props.columnsToDisplay[i]}
