@@ -133,7 +133,6 @@ export default class FilterableDataTable extends React.Component {
         return (
             <div
                 onClick={this.onClick}>
-                <Exporter types={this.props.exporters} getData={this.getDataMatchingSearch}/>
                 <DataColumnTogglers
                     columnsToKeep={this.state.columnsToKeep}
                     columnsToDisplay={this.state.columnsToDisplay}
@@ -153,7 +152,9 @@ export default class FilterableDataTable extends React.Component {
                     data={this.state.searchableData}
                     exactSearch={this.props.exactMatch}
                     />
-                <div><DataTable
+                <div>
+                    <Exporter types={this.props.exporters} getData={this.getDataMatchingSearch}/>
+                    <DataTable
                     {...rest}
                     rowsLimiter={this.state.rowsLimiter}
                     filterText={this.state.filterText}

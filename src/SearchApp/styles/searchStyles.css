@@ -51,3 +51,11 @@
 #searchApp tr.not-match{
     max-height:5px;
 }
+#searchApp ul.exporters{
+    margin-left:0px;
+    padding-left:0px;
+}
+#searchApp li.exporter{
+    margin-left:5px;
+    cursor:pointer;
+}

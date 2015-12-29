@@ -12,13 +12,13 @@ export default class Exporter extends React.Component {
         "csv": {
             method:()=>window.open("data:text/csv;charset=utf-8," + escape(Formatting.JSON2CSV(this.props.getData()))),
             icon: "",
-            classes: "btn btn-info",
+            classes: "label label-info",
             matches: ["csv", "CSV", "EXCEL", "excel"]
         },
         "json": {
             method: ()=>window.open("data:text/json;charset=utf-8," + escape(JSON.stringify(this.props.getData()))),
             icon: "",
-            classes: "btn btn-info",
+            classes: "label label-info",
             matches: ["json", "JSON", "JAVASCRIPT", "javascript", "JavaScript"]
         }
     }

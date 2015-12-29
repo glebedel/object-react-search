@@ -39,10 +39,10 @@ let Formatting = {
     JSON2CSV: (json)=> {
         let keys = [];
         for (let k in json[0]) keys.push(k);
-        let result = keys.join("\t") + "\n";
+        let result = keys.join(",") + "\n";
         json.forEach(function(obj){
             keys.forEach(function(k, ix){
-                if (ix) result += "\t";
+                if (ix) result += ",";
                 result += obj[k];
             });
             result += "\n";
